@@ -24,8 +24,12 @@ from .config import EXPERIMENT_NAME, TARGET_COLUMN, RANDOM_STATE
 from .preprocessing import build_tree_preprocessor
 from .models import get_xgb_model
 
-mlflow.set_tracking_uri("sqlite:///mlflow.db")
+import dagshub
+dagshub.init(repo_owner='Bhavik2209', repo_name='Heart_disease_ML_kaggle', mlflow=True)
+
+mlflow.set_tracking_uri("https://dagshub.com/Bhavik2209/Heart_disease_ML_kaggle.mlflow")
 mlflow.set_experiment(EXPERIMENT_NAME)
+
 
 
 def train_calibrated_xgb():
@@ -137,7 +141,7 @@ def train_calibrated_xgb():
     # -----------------------
     # Log To MLflow
     # -----------------------
-    with mlflow.start_run(run_name="XGBoost_Calibrated_FullMetrics"):
+    with mlflow.start_run(run_name="XGBoost_Calibrated_FullMetrics_test"):
 
         mlflow.log_params({
             "model": "XGBoost_Calibrated",
