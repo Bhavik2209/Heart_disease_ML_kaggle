@@ -2,6 +2,7 @@ import streamlit as st
 import dagshub
 import mlflow
 import pandas as pd
+import sklearn
 
 dagshub.init(
     repo_owner="Bhavik2209",
@@ -11,7 +12,7 @@ dagshub.init(
 
 @st.cache_resource
 def load_model():
-    return mlflow.pyfunc.load_model(
+    return mlflow.sklearn.load_model(
         "models:/Heart_Disease_XGB_Calibrated/1"
     )
 
@@ -61,15 +62,16 @@ if st.button("Predict"):
         "Thallium": thal
     }])
 
-    prob = model.predict(input_data)[0][1]
+    prob = model.predict_proba(input_data)[0][1]
 
     st.subheader("Prediction Result")
 
-    st.write(f"Heart Disease Probability: **{prob:.2f}**")
+    st.write(f"Heart Disease Probability: **{prob}**")
 
-    if prob < 0.3:
+
+    if prob < 0.4300:
         st.success("Low Risk")
-    elif prob < 0.6:
+    elif prob < 0.6500:
         st.warning("Medium Risk")
-    else:
-        st.error("High Risk")
+
+
